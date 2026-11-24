@@ -78,3 +78,33 @@
     *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
   }
 }
+
+@layer components {
+  .hero-actions, .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+  .actions { margin-top: 1rem; }
+  .actions button { margin: 0; }
+  .hero-secondary { background: #fff; }
+  .secondary { background: #eaf0e4; color: #17463d; }
+  .secondary:hover { background: #dce8d8; }
+  .mvp-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: start; }
+  .mvp-grid .panel { max-width: none; }
+  .lesson-panel { padding: clamp(1.2rem, 4vw, 2rem); }
+  .step-count { font-weight: 650; margin-bottom: .65rem; }
+  .lesson-icon { display: inline-grid; place-items: center; width: 3rem; height: 3rem; border-radius: .6rem; margin-bottom: .8rem; font-size: 1.5rem; color: #17463d; background: #eaf0e4; }
+  .takeaway { margin-top: .9rem; padding: .75rem; border-left: 3px solid #386a56; background: #eef3e6; }
+  .camera-panel p + p { margin-top: .4rem; }
+  .camera-panel video:not([hidden]) { display: block; width: 100%; max-height: 22rem; background: #143d35; border-radius: .6rem; margin-top: .75rem; transform: scaleX(-1); }
+  .gesture-guide ul { padding-block: .6rem; }
+  .gesture-guide li { margin-bottom: .65rem; }
+  .gesture-guide .button { margin-top: .75rem; }
+  .answer { display: flex; align-items: center; gap: .6rem; min-height: 2.75rem; padding: .6rem; margin-top: .45rem; border: 1px solid #c3cdc3; border-radius: .5rem; }
+  .answer:has(:checked) { background: #eaf0e4; border-color: #386a56; }
+  .answer input { accent-color: #17463d; }
+  .answer:focus-within, .lesson-panel h2:focus-visible { outline: 3px solid #8f4b13; outline-offset: 2px; }
+  button[aria-disabled="true"] { background: #eaf0e4; color: #41564e; cursor: default; }
+  .score { font-size: 1.5rem; font-weight: 720; }
+  .panel .completion-badge { display: inline-block; margin-block: .6rem; padding: .45rem .65rem; border-radius: .4rem; background: #e1f0df; color: #13503b; font-weight: 700; }
+  @media (max-width: 48rem) {
+    .mvp-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+}

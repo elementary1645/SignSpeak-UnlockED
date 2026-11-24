@@ -13,7 +13,7 @@ export function RecognitionCheck() {
   }
   return <section className="panel recognition-check" aria-labelledby="connection-title">
     <h2 id="connection-title">Recognition connection</h2>
-    <p>Check whether this browser can exchange messages with the recognition service. This check uses no camera or microphone.</p>
+    <p>Check the server connection for future sign recognition. The gesture camera runs separately in your browser.</p>
     <button type="button" onClick={check} aria-disabled={status === 'checking'}>Check connection</button>
     <p role="status">
       {status === 'checking' && 'Checking the connection…'}

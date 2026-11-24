@@ -1,38 +1,45 @@
 # SignSpeak
 ## Skill Without Barriers
 
-**wHACKiest 2026 · Track 4 – UnlockED**
+**wHACKiest 2026 · Track 4 – UnlockED · First-round MVP**
 
-Deaf and hard-of-hearing learners can encounter communication barriers across vocational instruction, assessment and access to employment. SignSpeak is a foundation for accessible vocational learning, evidence-based assessment, verifiable credentials and job discovery. The intended journey is Learn → Practice → Assessment → Credential → Employment. Sign recognition is designed as an optional input method. Practical competency requires its own evidence and assessment.
+Deaf and hard-of-hearing learners can face communication barriers in vocational education and assessment. SignSpeak demonstrates an accessible learning flow that pairs a short workplace-safety lesson with optional gesture controls and a three-question knowledge check. Each step also works through text, buttons and keyboard controls.
 
-### Phase 1
+### What works
 
-| Available | Future work |
-| --- | --- |
-| Responsive dashboard and route shells, live backend status and service capability reporting | Vocational content, progress and accessible competency assessments |
-| Versioned REST endpoints and recognition handshake/heartbeat | CPU-based sign classification, optional speech and selected offline learning |
-| SQLite lifecycle, developer diagnostics and automated checks | Credential issuance and verification, employment discovery |
-
-React, TypeScript, Vite, Tailwind CSS and React Router run in the browser. FastAPI, Pydantic, SQLAlchemy, SQLite and Uvicorn form the backend. Tests use Pytest, Vitest, React Testing Library and Playwright.
+- The browser camera recognizes three static interface gestures from MediaPipe hand landmarks. Open palm, V sign and closed fist have a steady-hold filter and neutral state.
+- **Workplace Safety Fundamentals** covers personal protective equipment, recognizing workplace hazards and emergency reporting. An open palm can advance the lesson.
+- The assessment accepts gesture or radio-button selections. Learners explicitly confirm each answer, receive feedback and see a score and completion badge.
+- The dashboard retains live backend availability. The lesson and knowledge check run in the browser and do not depend on the camera or backend.
 
 ```mermaid
 flowchart LR
-    User[Browser] --> UI[React application]
-    UI -->|REST and WebSocket| API[FastAPI modular monolith]
-    API --> DB[(SQLite)]
+    Camera[Optional webcam] --> Landmarks[MediaPipe in the browser]
+    Landmarks --> Rules[Gesture rules and stabilization]
+    Rules --> UI[React lesson and knowledge check]
+    Controls[Keyboard and buttons] --> UI
+    UI -->|Service status| API[FastAPI and SQLite]
 ```
 
-### Run locally or in Codespaces
+### Install and run
 
-Install Python 3.12, Node 24 and npm. From the repository root run:
+Use Python 3.12, pip 22.3 or newer, Node.js 24 and npm. From the repository root run:
 
 ```bash
 ./scripts/setup
-cp .env.example .env
+cp -n .env.example .env
 ./scripts/dev
 ```
 
-Open `http://localhost:5173` or the Codespaces forwarded port 5173. The backend binds to loopback port 8000. For separate terminals run `./scripts/backend` and `npm --prefix frontend run dev`. See [setup](docs/development/SETUP.md) for production hosting requirements.
+Open `http://localhost:5173` or the HTTPS Codespaces forwarded port 5173. For separate terminals, use `./scripts/backend` and `npm --prefix frontend run dev`. Internet access is needed to fetch the Google hand-landmark model when starting the camera. Camera access requires localhost or HTTPS and browser permission.
+
+### Demonstrate the MVP
+
+1. From the dashboard choose **Try gesture camera**. Select **Start camera** and allow camera access.
+2. In even light, frame one hand with all fingertips visible. Hold an open palm, then lower your hand until the label clears. Repeat with a V sign (index and middle fingers raised, ring and little fingers curled) and a closed fist. Try an unsupported shape and confirm the neutral label. Use **Stop camera** to release the webcam.
+3. Choose **Open workplace safety lesson**. Use **Next section** or start the camera again and hold an open palm to advance. Lower your hand between advances. Read all three sections and choose **Start assessment**.
+4. Select each answer with radio buttons or start the camera and use open palm for A, V sign for B, or closed fist for C. Choose **Confirm answer** with the button or keyboard, read the feedback, and advance.
+5. After question three, choose **View score**. The badge records completion of the knowledge check. It carries no vocational accreditation and does not establish practical competency.
 
 ### Checks
 
@@ -40,23 +47,16 @@ Open `http://localhost:5173` or the Codespaces forwarded port 5173. The backend 
 backend/.venv/bin/ruff check backend
 backend/.venv/bin/python -m pytest backend/tests
 npm --prefix frontend run lint
-npm --prefix frontend run typecheck
 npm --prefix frontend test
 npm --prefix frontend run build
 (cd frontend && npx playwright install chromium)
 npm --prefix frontend run test:e2e
 ```
 
-### Structure
+The browser tests start their own frontend and backend. Stop the development servers first. On Linux, Playwright may need system libraries. Use `npx playwright install --with-deps chromium` from `frontend/` if needed.
 
-- `backend/` contains HTTP and WebSocket routing, configuration, Pydantic contracts, service capabilities, SQLite infrastructure and tests.
-- `frontend/` contains the application, route views, data clients, shared UI, unit tests and browser tests.
-- `backend/app/models/`, `ml/{collection,features,training,evaluation,inference,tests}`, `data/{raw,processed,manifests}` and `artifacts/{models,evaluation}` are reserved.
-- `scripts/`, `.devcontainer/` and `.github/workflows/` provide development commands and CI.
-- `docs/` holds [architecture](docs/architecture/SYSTEM_ARCHITECTURE.md), [protocol](docs/architecture/RECOGNITION_PROTOCOL.md), [ML design](docs/architecture/ML_PIPELINE_DESIGN.md), [database design](docs/architecture/DATABASE_DESIGN.md) and [validation](docs/validation/PHASE1_VALIDATION.md).
+### Limitations and final hackathon proposals
 
-### Accessibility, privacy and roadmap
+The gesture controls support one visible hand and three static shapes. Position, lighting and occlusion affect detection. These gestures are generic interface controls and carry no claim of Indian Sign Language recognition. No recording, dataset preparation or custom model training is required. Camera frames stay on-device. Scores and badges are session-only. Meaningful verification before demo day includes physically trying the three gestures on the presentation laptop and checking its camera permissions and network access.
 
-Phase 1 includes semantic landmarks, labelled controls, keyboard navigation and skip link, visible focus, text-based service announcements and reduced-motion styling. WCAG 2.2 AA informs the interface. Full conformance and assistive-technology compatibility require further testing with users.
-
-Phase 1 has no account or camera capture, raw-media upload, model, predictions, credential issuance or job listings. Future data collection requires separate informed consent. The next implementation phase can establish consent and feature contracts before collecting data or validating classifiers. Later work covers learning and assessment evidence, credentials, employment, offline access and optional speech. See [originality and provenance](ORIGINALITY.md) and [contributing](docs/development/CONTRIBUTING.md).
+Potential final-hackathon work includes a validated sign vocabulary, additional vocational lessons, practical evidence assessment, verifiable credentials, employment discovery, offline access and optional speech. The original foundation and its [architecture notes](docs/architecture/SYSTEM_ARCHITECTURE.md) remain available. See [originality and provenance](ORIGINALITY.md) for the new dependency and model.

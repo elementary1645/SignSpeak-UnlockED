@@ -10,7 +10,10 @@ export function Dashboard({ capability }: { capability: (id: string) => Capabili
         <p className="eyebrow">Accessible vocational education</p>
         <h1 id="overview-title">Skill Without<br className="hero-break" /> Barriers</h1>
         <p className="intro">A path from vocational learning to employment for deaf and hard-of-hearing learners.</p>
-        <Link className="button hero-button" to="/learn">Explore learning</Link>
+        <div className="hero-actions">
+          <Link className="button hero-button" to="/recognition">Try gesture camera</Link>
+          <Link className="button hero-button hero-secondary" to="/learn">Open safety lesson</Link>
+        </div>
       </div>
       <div className="hero-pattern" aria-hidden="true"><i /><i /><i /></div>
     </section>
@@ -19,7 +22,7 @@ export function Dashboard({ capability }: { capability: (id: string) => Capabili
       <ol className="journey-grid">
         {journey.map(({ title, path, description, id }) => (
           <li className="journey-card" key={id}>
-            <Status state={capability(id) ?? (id === 'sign_recognition' ? 'unavailable' : 'planned')} />
+            <Status state={capability(id) ?? (['credentials', 'employment'].includes(id) ? 'planned' : 'available')} />
             <h3><Link to={path}>{title}</Link></h3>
             <p>{description}</p>
           </li>

@@ -4,12 +4,13 @@ import { journey } from './features/journey'
 import { useService } from './hooks/useService'
 import { Shell } from './layouts/Shell'
 import { Dashboard } from './pages/Dashboard'
+import { GestureCamera } from './components/GestureCamera'
+import { gestures } from './features/gestures'
+import { SafetyAssessment } from './pages/SafetyAssessment'
+import { WorkplaceSafety } from './pages/WorkplaceSafety'
 import { RecognitionCheck } from './pages/Recognition'
 
 const emptyStates = {
-  vocational_learning: 'Learning modules will appear here when available.',
-  sign_recognition: 'This phase supports connection checks. Sign input is unavailable.',
-  competency_assessment: 'Assessment activities will appear here when available. Practical skills require separate evidence.',
   credentials: 'There are no credentials to display.',
   employment: 'There are no job listings to display.',
 }
@@ -28,18 +29,32 @@ export function App() {
   return <Shell connectivity={connectivity}>
     <Routes>
       <Route index element={<Dashboard capability={capability} />} />
-      {journey.map(({ path, title, description, id }) => (
+      <Route path="/learn" element={<WorkplaceSafety availability={capability('vocational_learning')} />} />
+      <Route path="/assessment" element={<SafetyAssessment />} />
+      <Route path="/recognition" element={<>
+        <div className="page-heading"><h1>Recognition practice</h1><p>Try three hand gestures for controlling the lesson and knowledge check.</p></div>
+        <div className="mvp-grid">
+          <GestureCamera instructions="Show one hand in good light and hold a gesture briefly." />
+          <section className="panel gesture-guide">
+            <h2>Supported gestures</h2>
+            <ul>{Object.values(gestures).map(({ label, instruction }) => <li key={label}><strong>{label}</strong><p>{instruction}</p></li>)}</ul>
+            <p>These are interface gestures. Indian Sign Language support is planned.</p>
+            <Link to="/learn" className="button">Open workplace safety lesson</Link>
+          </section>
+        </div>
+        <RecognitionCheck />
+      </>} />
+      {journey.filter(entry => entry.id === 'credentials' || entry.id === 'employment').map(({ path, title, description, id }) => (
         <Route key={path} path={path} element={<>
           <div className="page-heading">
-            <Status state={capability(id) ?? (id === 'sign_recognition' ? 'unavailable' : 'planned')} />
-            <h1>{id === 'sign_recognition' ? 'Recognition practice' : title}</h1>
+            <Status state={capability(id) ?? 'planned'} />
+            <h1>{title}</h1>
             <p>{description}</p>
           </div>
           <section className="panel">
-            <h2>{id === 'sign_recognition' ? 'Sign input' : 'Availability'}</h2>
+            <h2>Availability</h2>
             <p>{emptyStates[id]}</p>
           </section>
-          {id === 'sign_recognition' && <RecognitionCheck />}
         </>} />
       ))}
       <Route path="/settings" element={<>

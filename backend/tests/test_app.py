@@ -63,8 +63,9 @@ def test_capabilities_and_version(client):
     }
     assert states["recognition_transport"] == "available"
     assert states["sign_recognition"] == "unavailable"
+    for feature in ("browser_gestures", "vocational_learning", "knowledge_check"):
+        assert states[feature] == "available"
     for feature in (
-        "vocational_learning",
         "credentials",
         "employment",
         "competency_assessment",
