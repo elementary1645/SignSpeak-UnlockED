@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    font-family: "Aptos", "Segoe UI", system-ui, sans-serif;
+    color: #1c2c2b;
+    background: #f7f8f3;
+    line-height: 1.55;
+  }
+  a { text-underline-offset: .23em; }
+  a:focus-visible, button:focus-visible { outline: 3px solid #8f4b13; outline-offset: 4px; }
+  h1, h2, h3 { font-weight: 720; line-height: 1.12; letter-spacing: -.035em; }
+  h2 { font-size: clamp(1.45rem, 3vw, 2rem); }
+  h3 { font-size: 1.25rem; }
+  button { cursor: pointer; }
+}
+
+@layer components {
+  .frame { width: min(75rem, calc(100% - 3rem)); margin-inline: auto; }
+  .site-header { background: #fff; border-bottom: 1px solid #d8e1d7; }
+  .topbar, .footer, .connectivity { @apply flex flex-wrap items-center justify-between; gap: .65rem 1rem; }
+  .topbar { padding-block: 1.15rem; }
+  .brand { @apply inline-flex items-center; gap: .7rem; font-size: 1.4rem; font-weight: 780; line-height: 1.15; letter-spacing: -.04em; }
+  .brand small { display: block; font-size: .875rem; font-weight: 550; color: #41564e; letter-spacing: 0; }
+  .brand-mark { @apply inline-flex items-end justify-center; width: 2.65rem; height: 2.65rem; padding-bottom: .63rem; gap: .17rem; border-radius: .72rem; background: #17463d; }
+  .brand-mark i { width: .24rem; height: .7rem; background: #dfeeb2; border-radius: 1rem; transform: rotate(22deg); }
+  .brand-mark i:nth-child(2) { height: 1.03rem; }
+  .brand-mark i:nth-child(3) { height: 1.3rem; }
+  .nav { @apply flex flex-wrap; gap: 0 .3rem; }
+  .nav a { padding: .67rem .75rem; border-bottom: 3px solid transparent; font-size: .9375rem; font-weight: 625; }
+  .nav a:hover, .nav a[aria-current="page"] { color: #17463d; background: #eef3e6; }
+  .nav a[aria-current="page"] { border-color: #386a56; }
+  .connection, .status { display: inline-block; border-radius: .35rem; font-size: .875rem; font-weight: 650; padding: .24rem .52rem; background: #eaf0e4; color: #344e3e; }
+  .connection:empty { display: none; }
+  .connection.connected, .status.available { color: #13503b; background: #e1f0df; }
+  .connection.error, .status.degraded { color: #7c3024; background: #f9e7df; }
+  .status.unavailable { color: #4d4231; background: #f1ebe0; }
+  .main-content { padding-block: clamp(1.25rem, 4vw, 3rem) 3.5rem; min-height: 65vh; }
+  .main-content:focus { outline: none; }
+  .hero { @apply relative isolate overflow-hidden; background: #143d35; color: #fff; border-radius: 1.2rem; padding: clamp(1.5rem, 5.4vw, 4rem); }
+  .hero-content { position: relative; z-index: 1; }
+  .eyebrow { color: #e1efbd; font-size: .875rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+  h1 { font-size: clamp(2.15rem, 6.3vw, 5.45rem); }
+  .hero h1 { margin-block: .55rem .85rem; line-height: .98; }
+  .intro { max-width: 31rem; font-size: clamp(1.05rem, 2vw, 1.22rem); color: #e6efe5; }
+  .button, button { display: inline-flex; align-items: center; min-height: 2.75rem; background: #17463d; color: #fff; border-radius: .5rem; padding: .55rem 1rem; font-weight: 680; }
+  .button:hover, button:hover { background: #25594e; }
+  .hero-button { margin-top: 1.5rem; background: #e0edb1; color: #1b3525; }
+  .hero-button:hover { background: #f0f7d1; }
+  .hero a:focus-visible { outline-color: #fff; }
+  .hero-pattern { position: absolute; inset: 0 0 0 60%; pointer-events: none; }
+  .hero-pattern i { position: absolute; width: 48%; height: 150%; top: 8%; border-radius: 9rem; background: #245448; transform: rotate(32deg); }
+  .hero-pattern i:nth-child(2) { left: 35%; top: -33%; background: #386d58; }
+  .hero-pattern i:nth-child(3) { left: 73%; top: -45%; background: #527a57; }
+  .journey { margin-top: 2.3rem; }
+  .journey-grid { @apply grid gap-3; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); margin-top: 1rem; }
+  .journey-card, .panel { border: 1px solid #d8e1d7; background: #fff; border-radius: .8rem; padding: 1.2rem; }
+  .journey-card h3 { margin-block: .75rem .5rem; }
+  .journey-card a, .page-heading a { text-decoration: underline; }
+  .journey-card p, .panel p, .page-heading p { color: #40544d; }
+  .page-heading { margin-bottom: 1.5rem; }
+  .page-heading h1 { margin-block: .5rem; font-size: clamp(2rem, 5vw, 3.75rem); }
+  .panel { max-width: 48rem; margin-bottom: 1rem; }
+  .panel h2 { margin-bottom: .6rem; }
+  .panel button { margin-top: .65rem; }
+  .panel [role="status"]:not(:empty), .panel [role="alert"] { margin-top: .65rem; }
+  .panel [role="alert"] { color: #7c3024; }
+  .retry { font-size: .875rem; }
+  .footer { border-top: 1px solid #d8e1d7; padding-block: 1rem; font-size: .875rem; color: #40544d; }
+  .skip-link { position: absolute; z-index: 2; top: .4rem; left: .4rem; transform: translateY(-200%); background: #fff; padding: .65rem; border-radius: .4rem; }
+  .skip-link:focus { transform: none; }
+  @media (max-width: 40rem) {
+    .frame { width: calc(100% - 1.5rem); }
+    .hero-pattern { opacity: .25; }
+    .nav a { padding-inline: .48rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+  }
+}
