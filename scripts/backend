@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root/backend"
+exec .venv/bin/python -m uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8000 --ws websockets-sansio --ws-max-size 4096 "$@"

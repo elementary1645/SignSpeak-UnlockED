@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root"
+python3.12 -m venv --without-pip backend/.venv
+python3 -m pip --python backend/.venv install --require-hashes -r backend/requirements.lock
+python3 -m pip --python backend/.venv install --no-deps --no-build-isolation -e backend
+npm --prefix frontend ci
